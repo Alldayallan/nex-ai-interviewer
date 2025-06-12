@@ -18,22 +18,23 @@ export async function signUp(params: SignUpParams) {
             };
 
         await db.collection('users').doc(uid).set({
-            name, email
-        })
+            name,
+            email,
+        });
 
         return {
             success: true,
-            message: 'Account created successfully. Please sign in.'
-        }
+            message: 'Account created successfully. Please sign in.',
+        };
 
-    } catch (e: any ) {
-        console.error("Error creating user:", e);
+    } catch (error: any ) {
+        console.error("Error creating user:", error);
 
-        if(e.code === 'auth/email-already-exists') {
+        if(error.code === 'auth/email-already-exists') {
             return {
                 success: false,
                 message: "This email is already in use",
-            }
+            };
         }
 
         return {
@@ -56,8 +57,8 @@ export async function signIn(params: SignInParams) {
         };
 
     await setSessionCookie(idToken);
-} catch (e) {
-    console.log(e);
+} catch (error: any) {
+    console.log("");
 
     return {
         success: false,
@@ -101,8 +102,8 @@ export async function getCurrentUser(): Promise<User | null> {
             ...userRecord.data(),
             id: userRecord.id,
         } as User;
-    } catch (e) {
-        console.log(e)
+    } catch (error) {
+        console.log(error);
 
         return null;
     }
